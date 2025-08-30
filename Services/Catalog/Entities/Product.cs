@@ -13,5 +13,6 @@ namespace Catalog.Entities
         public ProductType? Type { get; set; }
         [BsonRepresentation(BsonType.Decimal128)]
         public decimal Price { get; set; }
+        public DateTimeOffset CreatedDate { get; set; }
     }
 }

@@ -16,7 +16,6 @@
 
   <ItemGroup>
     <Folder Include="Handlers\" />
-    <Folder Include="Data\" />
     <Folder Include="Commands\" />
     <Folder Include="Controllers\" />
     <Folder Include="Queries\" />
