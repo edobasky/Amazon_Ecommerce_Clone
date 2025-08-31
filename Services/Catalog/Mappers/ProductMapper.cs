@@ -20,7 +20,8 @@ namespace Catalog.Mappers
                 ImageFile = product.ImageFile,  
                 Price = product.Price,
                 Brand = product.Brand,
-                Type    = product.Type,
+                Type = product.Type,
+                CreatedDate = product.CreatedDate,
             };
         }
 

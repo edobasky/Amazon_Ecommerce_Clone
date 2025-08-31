@@ -13,8 +13,8 @@ namespace Catalog.Handlers.Create_Update
             if (existing is null) throw new KeyNotFoundException($"Product with Id {request.Id} not found");
 
             // step 1 : Fetch Brand and Type
-            var brand = await productRepository.GetBrandByIdAsync(request.Id);
-            var type = await productRepository.GetTypeByIdAsync(request.Id);
+            var brand = await productRepository.GetBrandByIdAsync(request.BrandId);
+            var type = await productRepository.GetTypeByIdAsync(request.TypeId);
 
             if (brand is null || type is null) throw new ApplicationException("Invalid Brand or Type specified");
 
