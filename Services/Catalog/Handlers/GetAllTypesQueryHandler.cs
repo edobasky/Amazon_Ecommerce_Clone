@@ -1,4 +1,5 @@
-﻿using Catalog.Extensions;
+﻿
+using Catalog.Mappers;
 using Catalog.Queries;
 using Catalog.Repositories;
 using Catalog.Responses;

@@ -2,12 +2,13 @@
 using Catalog.Responses;
 using Catalog.Specifications;
 
-namespace Catalog.Extensions
+namespace Catalog.Mappers
 {
     public static class ProductMapper
     {
         public static ProductResponse ToResponse(this Product product)
         {
+            if (product is null) return new ProductResponse();
             return new ProductResponse
             {
                 Id = product.Id,
@@ -20,6 +21,9 @@ namespace Catalog.Extensions
                 Type    = product.Type,
             };
         }
+
+        public static IEnumerable<ProductResponse> ToResponseList(this IEnumerable<Product> products) =>
+            products.Select(p => p.ToResponse());
         public static Pagination<ProductResponse> ToResponse(this Pagination<Product> pagination)
         {
            return new Pagination<ProductResponse>(
