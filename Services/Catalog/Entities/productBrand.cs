@@ -2,7 +2,7 @@
 
 namespace Catalog.Entities
 {
-    public class productBrand : BaseEntity
+    public class ProductBrand : BaseEntity
     {
         [BsonElement("Name")]
         public string Name { get; set; }
