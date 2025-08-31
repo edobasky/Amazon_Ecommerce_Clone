@@ -4,7 +4,7 @@ using Catalog.Repositories;
 using Catalog.Responses;
 using MediatR;
 
-namespace Catalog.Handlers
+namespace Catalog.Handlers.Read
 {
     public class GetProductsByIdQueryHandler(IProductRepository productRepository) : IRequestHandler<GetProductsByIdQuery, ProductResponse>
     {

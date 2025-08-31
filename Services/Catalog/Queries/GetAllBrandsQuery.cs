@@ -3,7 +3,7 @@ using MediatR;
 
 namespace Catalog.Queries
 {
-    public record GetProductsByBrandQuery(string BrandName) : IRequest<IList<ProductResponse>>
+    public record GetAllBrandsQuery(string BrandName) : IRequest<IList<BrandResponse>>
     {
     }
 }

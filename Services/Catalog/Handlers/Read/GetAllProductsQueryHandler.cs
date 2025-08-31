@@ -1,12 +1,11 @@
-﻿
-using Catalog.Mappers;
+﻿using Catalog.Mappers;
 using Catalog.Queries;
 using Catalog.Repositories;
 using Catalog.Responses;
 using Catalog.Specifications;
 using MediatR;
 
-namespace Catalog.Handlers
+namespace Catalog.Handlers.Read
 {
     public class GetAllProductsQueryHandler(IProductRepository productRepository) : IRequestHandler<GetAllProductsQuery, Pagination<ProductResponse>>
     {
