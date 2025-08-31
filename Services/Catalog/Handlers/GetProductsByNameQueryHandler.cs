@@ -10,7 +10,7 @@ namespace Catalog.Handlers
     {
         public async Task<IList<ProductResponse>> Handle(GetProductsByNameQuery request, CancellationToken cancellationToken)
         {
-            var productList = await productRepository.GetProductsByName(request.name);
+            var productList = await productRepository.GetProductsByName(request.name); //
 
             return productList.ToResponseList().ToList();
         }
