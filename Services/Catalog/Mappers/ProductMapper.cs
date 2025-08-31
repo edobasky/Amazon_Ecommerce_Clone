@@ -1,4 +1,5 @@
 ﻿using Catalog.Commands;
+using Catalog.DTOs;
 using Catalog.Entities;
 using Catalog.Responses;
 using Catalog.Specifications;
@@ -60,5 +61,19 @@ namespace Catalog.Mappers
                 Price = command.Price,
                 CreatedDate = existing.CreatedDate, 
             };
+        public static UpdateProductCommand ToCommand(this UpdateProductDto dto,string Id)
+        {
+            return new UpdateProductCommand
+            {
+                Id = Id,
+                Name = dto.Name,
+                Summary = dto.Summary,
+                Description = dto.Description,
+                ImageFile = dto.ImageFile,
+                Price = dto.Price,
+                BrandId = dto.BrandId,
+                TypeId = dto.TypeId,
+            };
+        }
     }
 }

@@ -10,6 +10,7 @@ namespace Catalog.DTOs
         string ImageFile,
         BrandDto BrandDto,
         TypeDto Type, 
+        decimal Price,
         DateTimeOffset CreatedDate
         );
 
