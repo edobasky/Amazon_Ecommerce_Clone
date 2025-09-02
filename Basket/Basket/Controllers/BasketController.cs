@@ -27,9 +27,10 @@ namespace Basket.Controllers
         }
 
         [HttpDelete("{username}")]
-        public async Task<ActionResult> DeleteBasket(string userName)
+        public async Task<ActionResult> DeleteBasket(string username)
         {
-            await mediator.Send(new DeleteBasketByUsernameCommand(userName));
+            var cmd = new DeleteBasketByUsernameCommand(username);
+            await mediator.Send(cmd);
             return Ok();
         }
     }
