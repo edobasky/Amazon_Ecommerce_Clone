@@ -49,5 +49,24 @@ namespace Discount.Mappers
                 Amount  = (double)dto.Amount,
             };
         }
+
+        public static CreateDiscountCommand ToCreateCommand(this CouponModel model)
+        {
+            return new CreateDiscountCommand(
+                    model.ProductName,
+                    model.Description,
+                    (decimal)model.Amount
+                );
+        }
+
+        public static UpdateDiscountCommand ToUpdateCommand(this CouponModel model)
+        {
+            return new UpdateDiscountCommand(
+                    model.Id,
+                    model.ProductName,
+                    model.Description,
+                    (decimal)model.Amount
+                );
+        }
     }
 }
