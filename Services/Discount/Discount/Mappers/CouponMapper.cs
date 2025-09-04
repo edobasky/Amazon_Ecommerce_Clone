@@ -1,7 +1,9 @@
 ﻿using Discount.Commands;
 using Discount.DTOs;
 using Discount.Entities;
+
 using Discount.Grpc.Protos;
+
 
 namespace Discount.Mappers
 {
@@ -68,5 +70,6 @@ namespace Discount.Mappers
                     (decimal)model.Amount
                 );
         }
+
     }
 }
