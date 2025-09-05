@@ -1,7 +1,9 @@
 using System.Reflection;
+using Basket.GrpcService;
 using Basket.Handlers;
 using Basket.Repositories;
 using Basket.Repositories.Interface;
+using Discount.Grpc.Protos;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,17 +18,23 @@ builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Register Mediatr
 var assemblies = new Assembly[]
 {
     Assembly.GetExecutingAssembly(),
     typeof(CreateShoppingCartCommandHandler).Assembly
 };
+builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assemblies));
 
+// Register Redis
 builder.Services.AddStackExchangeRedisCache(options =>
 {
     options.Configuration = builder.Configuration.GetValue<string>("CacheSettings:ConnectionString");
 });
-builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assemblies));
+
+// Register Service
+builder.Services.AddScoped<DiscountGrpcService>();
+builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>(cfg => cfg.Address = new Uri(builder.Configuration["GrpcSettings:DiscountUrl"]));
 
 var app = builder.Build();
 
