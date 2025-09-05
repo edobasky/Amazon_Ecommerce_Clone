@@ -11,7 +11,7 @@ namespace Discount.Extentions
             {
                 var services = scope.ServiceProvider;  
                 var config = services.GetRequiredService<IConfiguration>();
-                var logger = services.GetRequiredService<ILogger>();
+                var logger = services.GetRequiredService<ILogger<TContext>>();
 
                 try
                 {
@@ -41,19 +41,20 @@ namespace Discount.Extentions
                     {
                         Connection = connection
                     };
-                    cmd.CommandText = "DROP TABLE IF EXIST Coupon";
+                    cmd.CommandText = "DROP TABLE IF EXISTS Coupon";
                     cmd.ExecuteNonQuery();
                     cmd.CommandText = @"CREATE TABLE Coupon(Id SERIAL PRIMARY KEY,
                                     ProductName VARCHAR(200) NOT NULL,
                                     Description TEXT,
                                     Amount DECIMAL(8,2))";
+                    cmd.ExecuteNonQuery();
                     cmd.CommandText = @"INSERT INTO Coupon (ProductName, Description, Amount)
                                 VALUES
-                                ('Adidas', 'Discount on Adidas sneakers', 50.00),
-                                ('Puma', 'Puma sportswear promo', 30.50),
-                                ('Nike', 'Nike running shoes discount', 45.75),
-                                ('Reebok', 'Reebok fitness gear special offer', 25.00),
-                                ('Under Armour', 'Under Armour performance wear discount', 40.20)
+                                ('Adidas', 'Discount on Adidas sneakers', 100.00),
+                                ('Puma', 'Puma sportswear promo', 25.50),
+                                ('Nike', 'Nike running shoes discount', 50.75),
+                                ('Reebok', 'Reebok fitness gear special offer', 45.00),
+                                ('Under Armour', 'Under Armour performance wear discount', 84.20)
                                 ";
                     cmd.ExecuteNonQuery();
                     
