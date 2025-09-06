@@ -21,14 +21,8 @@
 
   <ItemGroup>
     <Folder Include="Controllers\" />
-    <Folder Include="Commands\" />
-    <Folder Include="Handlers\" />
-    <Folder Include="DTOs\" />
     <Folder Include="Behaviour\" />
-    <Folder Include="Mappers\" />
     <Folder Include="Extensions\" />
-    <Folder Include="Repositories\" />
-    <Folder Include="Queries\" />
   </ItemGroup>
 
 </Project>
