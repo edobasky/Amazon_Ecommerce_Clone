@@ -58,6 +58,28 @@ namespace Ordering.Mappers
             };
         }
 
+        public static UpdateOrderCommand ToCommand(this OrderDto dto)
+        {
+            return new UpdateOrderCommand
+            {
+                Id = dto.Id,
+                UserName = dto.UserName,
+                TotalPrice = dto.TotalPrice,
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
+                EmailAddress = dto.EmailAddress,
+                AddressLine = dto.AddressLine,
+                CardName = dto.CardName,
+                CardNumber = dto.CardNumber,
+                Expiration = dto.Expiration,
+                Cvv = dto.Cvv,
+                PaymentMethod = dto.PaymentMethod,
+                Country = dto.Country,
+                State = dto.State,
+                ZipCode = dto.ZipCode,
+            };
+        }
+
         public static void MapUpdate(this Order orderToUpdate, UpdateOrderCommand request)
         {
             orderToUpdate.UserName = request.UserName;
