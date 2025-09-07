@@ -1,7 +1,9 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Ordering.Commands;
 using Ordering.DTOs;
+using Ordering.Mappers;
 using Ordering.Queries;
 
 namespace Ordering.Controllers
@@ -21,12 +23,30 @@ namespace Ordering.Controllers
 
         // testing purpose
         [HttpPost(Name = "CheckoutOrder")]
-        public async async Task<ActionResult>([FromBody] CreateOrderDto dto)
+        public async Task<ActionResult<int>> CheckoutOrder([FromBody] CreateOrderDto dto)
         {
             var command = dto.ToCommand();
             var result = await mediator.Send(command);
-            logger.LogInformation($"Order create with Id: {result.Id}");
+            logger.LogInformation($"Order create with Id: {result}");
             return Ok(result);
+        }
+
+        [HttpPut(Name ="UpdateOrder")]
+        public async Task<IActionResult> UpdateOrder([FromBody] OrderDto dto)
+        {
+            var command = dto.ToCommand();
+            await mediator.Send(command);
+            logger.LogInformation($"Order updated with Id: {dto.Id}");
+            return NoContent();
+        }
+
+        [HttpDelete("{id}",Name = "DeleteOrder")]
+        public async Task<IActionResult> DeleteOrder([FromRoute] int id)
+        {
+            var command = new DeleteOrderCommand { Id = id };
+            await mediator.Send(command);
+            logger.LogInformation($"Order deleted with id: {id}");
+            return NoContent();
         }
     }
 }

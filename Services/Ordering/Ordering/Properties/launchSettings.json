@@ -10,14 +10,15 @@
         "ASPNETCORE_ENVIRONMENT": "Development"
       }
     },
-    "https": {
-      "commandName": "Project",
-      "dotnetRunMessages": true,
-      "launchBrowser": false,
-      "applicationUrl": "https://localhost:7056;http://localhost:5062",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
-      }
+    "Ordering": {
+        "commandName": "Project",
+        "dotnetRunMessages": true,
+        "launchUrl": "swagger",
+        "launchBrowser": true,
+        "applicationUrl": "https://localhost:8003;http://localhost:5003",
+        "environmentVariables": {
+            "ASPNETCORE_ENVIRONMENT": "Development"
+        }
     }
   }
 }
