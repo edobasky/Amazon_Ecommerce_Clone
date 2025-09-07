@@ -1,6 +1,7 @@
 ﻿using Ordering.Commands;
 using Ordering.DTOs;
 using Ordering.Entities;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Ordering.Mappers
 {
@@ -23,7 +24,7 @@ namespace Ordering.Mappers
                 FirstName = command.FirstName,
                 LastName = command.LastName,
                 EmailAddress = command.EmailAddress,
-                AddressLine = command.AddreLine,
+                AddressLine = command.AddressLine,
                 CardName = command.CardName,
                 CardNumber = command.CardNumber,
                 Expiration = command.Expiration,
@@ -33,6 +34,27 @@ namespace Ordering.Mappers
                 State = command.State,
                 ZipCode = command.ZipCode,
 
+            };
+        }
+
+        public static CheckOutOrderCommand ToCommand(this CreateOrderDto dto)
+        {
+            return new CheckOutOrderCommand
+            {
+                UserName = dto.UserName,
+                TotalPrice = dto.TotalPrice,
+                FirstName = dto.FirstName,
+                LastName = dto.LastName,
+                EmailAddress = dto.EmailAddress,
+                AddressLine = dto.AddressLine,
+                CardName = dto.CardName,
+                CardNumber = dto.CardNumber,
+                Expiration = dto.Expiration,
+                Cvv = dto.Cvv,
+                PaymentMethod = dto.PaymentMethod,
+                Country = dto.Country,
+                State = dto.State,
+                ZipCode = dto.ZipCode,
             };
         }
 

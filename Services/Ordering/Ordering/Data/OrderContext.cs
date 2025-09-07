@@ -19,7 +19,7 @@ namespace Ordering.Data
                 {
                     case EntityState.Added:
                         entry.Entity.CreatedDate = DateTime.UtcNow;
-                        entry.Entity.CreateadBy = "Emmanuel"; // TODO Replace this with User from IUserService
+                        entry.Entity.CreatedBy = "Emmanuel"; // TODO Replace this with User from IUserService
                         break;
                     case EntityState.Modified:
                         entry.Entity.LastModifiedDate = DateTime.UtcNow;
