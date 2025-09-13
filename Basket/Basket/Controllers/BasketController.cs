@@ -34,7 +34,7 @@ namespace Basket.Controllers
             return Ok();
         }
 
-        [HttpPost]
+        [HttpPost("[action]")]
         public async Task<IActionResult> Checkout([FromBody] BasketCheckoutDto dto)
         {
             await mediator.Send(new CheckoutBasketCommand(dto));
