@@ -19,7 +19,7 @@ namespace Ordering.Dispatcher
                 var publishEndpoint = scope.ServiceProvider.GetRequiredService<IPublishEndpoint>();
 
                 var pendingMessages = await dbContext.outboxMessages
-                                            .Where(x => x.IsProcessed == null)
+                                            .Where(x => x.ProcessedOn == null)
                                             .OrderBy(x => x.CreatedDate)
                                             .Take(20)
                                             .ToListAsync();
