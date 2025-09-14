@@ -15,7 +15,7 @@ namespace Basket.Repositories
 
         public async Task<ShoppingCart> GetBasket(string userName)
         {
-            var basket = await redisCache.GetstringAsync(userName);
+            var basket = await redisCache.GetStringAsync(userName);
             if (string.IsNullOrEmpty(basket)) return null;
             return JsonSerializer.Deserialize<ShoppingCart>(basket)!;
         }
@@ -23,7 +23,7 @@ namespace Basket.Repositories
         // Upsert operation
         public async Task<ShoppingCart> UpsertBasket(ShoppingCart shoppingCart)
         {
-            await redisCache.SetstringAsync(shoppingCart.UserName, JsonSerializer.Serialize(shoppingCart));
+            await redisCache.SetStringAsync(shoppingCart.UserName, JsonSerializer.Serialize(shoppingCart));
             return await GetBasket(shoppingCart.UserName);
         }
     }

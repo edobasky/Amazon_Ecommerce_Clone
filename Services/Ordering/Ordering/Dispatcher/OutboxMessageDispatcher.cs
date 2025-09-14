@@ -1,5 +1,6 @@
 ﻿
 using System.Text.Json;
+using EventBus.Messages.Events;
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Writers;
@@ -28,7 +29,7 @@ namespace Ordering.Dispatcher
                     try
                     {
                         // var dynamicData = JsonSerializer.Deserialize<dynamic>(message.Content);
-                        var orderCreatedEvent = JsonSerializer.Deserialize<orderCreatedEvent>(message.Content);
+                        var orderCreatedEvent = JsonSerializer.Deserialize<OrderCreatedEvent>(message.Content);
                         await publishEndpoint.Publish(orderCreatedEvent);
 
                         message.ProcessedOn = DateTime.UtcNow;

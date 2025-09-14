@@ -129,7 +129,7 @@ namespace Ordering.Mappers
         {
             return new OutboxMessage
             {
-                CorrelationId = Guid.NewGuid().Tostring(),
+                CorrelationId = Guid.NewGuid().ToString(),
                 Type = OutboxMessageTypes.OrderCreated,
                 OccurredOn = DateTime.UtcNow,
                 Content = JsonSerializer.Serialize(new
