@@ -14,7 +14,7 @@ namespace Catalog.Repositories
         private readonly IMongoCollection<ProductType> _types;
         public ProductRepository(IConfiguration config)
         {
-            var client = new MongoClient(config["DatabaseSettings:ConnectionString"]);
+            var client = new MongoClient(config["DatabaseSettings:Connectionstring"]);
             var db = client.GetDatabase(config["DatabaseSettings:DatabaseName"]);
             _products = db.GetCollection<Product>(config["DatabaseSettings:ProductCollectionName"]);
             _brands = db.GetCollection<ProductBrand>(config["DatabaseSettings:BrandCollectionName"]);

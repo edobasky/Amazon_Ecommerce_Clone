@@ -9,7 +9,7 @@ namespace Ordering.Extensions
         public static IServiceCollection AddInfraServices(this IServiceCollection services,IConfiguration configuration)
         {
             services.AddDbContext<OrderContext>(options => options.UseSqlServer(
-                configuration.GetConnectionString("OrderConnection"),
+                configuration.GetConnectionstring("OrderConnection"),
                 sqlServiceOptions => sqlServiceOptions.EnableRetryOnFailure()));
             services.AddScoped(typeof(IAsyncRepository<>),typeof(RepositoryBase<>));
             services.AddScoped<IOrderRepository,OrderRepository>();

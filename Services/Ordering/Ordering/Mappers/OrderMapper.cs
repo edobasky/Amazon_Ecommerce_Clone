@@ -1,5 +1,8 @@
-﻿using EventBus.Messages.Events;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
+using EventBus.Messages.Events;
 using Ordering.Commands;
+using Ordering.Constants;
 using Ordering.DTOs;
 using Ordering.Entities;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
@@ -119,6 +122,35 @@ namespace Ordering.Mappers
                 Cvv = message.Cvv,
 
 
+            };
+        }
+
+        public static OutboxMessage ToOutboxMessage(this Order order)
+        {
+            return new OutboxMessage
+            {
+                CorrelationId = Guid.NewGuid().Tostring(),
+                Type = OutboxMessageTypes.OrderCreated,
+                OccurredOn = DateTime.UtcNow,
+                Content = JsonSerializer.Serialize(new
+                {
+                    order.Id,
+                    order.UserName,
+                    order.TotalPrice,
+                    order.FirstName,
+                    order.LastName,
+                    order.AddressLine,
+                    order.Country,
+                    order.State,
+                    order.ZipCode,
+                    // pci card sensitive
+                    order.CardName,
+                    order.CardNumber,
+                    order.Expiration,
+                    order.Cvv,
+                    order.PaymentMethod,
+                    order.Status
+                })
             };
         }
     }

@@ -22,7 +22,7 @@ namespace Basket.Handlers
             await publishEndpoint.Publish(evt,cancellationToken);
 
             // delete the basket
-          //  await mediator.Send(new DeleteBasketByUsernameCommand(dto.UserName),cancellationToken);
+            await mediator.Send(new DeleteBasketByUsernameCommand(dto.UserName),cancellationToken);
 
             return Unit.Value;
 

@@ -9,8 +9,8 @@ using MongoDB.Bson.Serialization.Serializers;
 var builder = WebApplication.CreateBuilder(args);
 
 // Register custom serializers
-BsonSerializer.RegisterSerializer(new GuidSerializer(BsonType.String));
-BsonSerializer.RegisterSerializer(new DateTimeOffsetSerializer(BsonType.String));
+BsonSerializer.RegisterSerializer(new GuidSerializer(BsonType.string));
+BsonSerializer.RegisterSerializer(new DateTimeOffsetSerializer(BsonType.string));
 
 // Add swagger service
 builder.Services.AddEndpointsApiExplorer();

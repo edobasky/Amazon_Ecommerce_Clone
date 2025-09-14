@@ -8,7 +8,7 @@ namespace Catalog.Repositories
         private readonly IMongoCollection<ProductType> _types;
         public TypeRepository(IConfiguration config)
         {
-            var client = new MongoClient(config["DatabaseSettings:ConnectionString"]);
+            var client = new MongoClient(config["DatabaseSettings:Connectionstring"]);
             var db = client.GetDatabase(config["DatabaseSettings:DatabaseName"]);
             _types = db.GetCollection<ProductType>(config["DatabaseSettings:TypeCollectionName"]);
         }
