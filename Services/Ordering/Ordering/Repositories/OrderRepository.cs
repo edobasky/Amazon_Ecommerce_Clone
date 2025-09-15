@@ -18,5 +18,11 @@ namespace Ordering.Repositories
                                     .ToListAsync();
             return orderList;
         }
+
+        public async Task AddOutboxMessageAsync(OutboxMessage outboxMessage)
+        {
+            await _dbContext.outboxMessages.AddAsync(outboxMessage);
+            await _dbContext.SaveChangesAsync();
+        }
     }
 }

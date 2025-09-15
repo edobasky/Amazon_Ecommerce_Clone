@@ -12,9 +12,9 @@ namespace Ordering.Data
                 .AddJsonFile("appsettings.json")
                 .Build();
 
-            var connectionString = configuration.GetConnectionString("OrderConnection");
+            var connectionstring = configuration.GetConnectionString("OrderConnection");
             var optionsBuilder = new DbContextOptionsBuilder<OrderContext>();
-            optionsBuilder.UseSqlServer(connectionString);
+            optionsBuilder.UseSqlServer(connectionstring);
             return new OrderContext(optionsBuilder.Options);
         }
     }

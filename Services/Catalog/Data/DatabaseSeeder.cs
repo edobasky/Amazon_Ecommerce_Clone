@@ -8,7 +8,7 @@ namespace Catalog.Data
     {
         public static async Task SeedAsync(IConfiguration config)
         {
-            var client = new MongoClient(config["DatabaseSettings:ConnectionString"]);
+            var client = new MongoClient(config["DatabaseSettings:Connectionstring"]);
             var db = client.GetDatabase(config["DatabaseSettings:DatabaseName"]);
             var products = db.GetCollection<Product>(config["DatabaseSettings:ProductCollectionName"]);
             var brands = db.GetCollection<ProductBrand>(config["DatabaseSettings:BrandCollectionName"]);

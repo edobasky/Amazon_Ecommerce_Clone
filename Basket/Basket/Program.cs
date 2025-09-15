@@ -30,7 +30,7 @@ builder.Services.AddMediatR(cfg => cfg.RegisterServicesFromAssemblies(assemblies
 // Register Redis
 builder.Services.AddStackExchangeRedisCache(options =>
 {
-    options.Configuration = builder.Configuration.GetValue<string>("CacheSettings:ConnectionString");
+    options.Configuration = builder.Configuration.GetValue<string>("CacheSettings:Connectionstring");
 });
 
 // Register Service

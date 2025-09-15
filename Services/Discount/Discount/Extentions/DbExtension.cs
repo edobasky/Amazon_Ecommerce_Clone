@@ -35,7 +35,7 @@ namespace Discount.Extentions
             {
                 try
                 {
-                    using var connection = new NpgsqlConnection(config.GetValue<string>("DatabaseSettings:ConnectionString"));
+                    using var connection = new NpgsqlConnection(config.GetValue<string>("DatabaseSettings:Connectionstring"));
                     connection.Open();
                     using var cmd = new NpgsqlCommand
                     {

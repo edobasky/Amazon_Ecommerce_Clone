@@ -1,6 +1,7 @@
 using EventBus.Messages.Common;
 using MassTransit;
 using Ordering.Data;
+using Ordering.Dispatcher;
 using Ordering.EventBusConsumer;
 using Ordering.Extensions;
 
@@ -14,10 +15,19 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddOpenApi();
 builder.Services.AddSwaggerGen();
 
+// Application Service
 builder.Services.AddApplicationServices();
+
+// Add Infra service
 builder.Services.AddInfraServices(builder.Configuration);
+
+// Register outbox message dispatcher
+builder.Services.AddHostedService<OutboxMessageDispatcher>();
+
+// Add Mass Transit
 builder.Services.AddMassTransit(config =>
 {
+    // Mark as consumer
     config.AddConsumer<BasketOrderringConsumer>();
     config.UsingRabbitMq((ctx, cfg) =>
     {

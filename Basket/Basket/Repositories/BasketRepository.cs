@@ -10,7 +10,7 @@ namespace Basket.Repositories
         public async Task DeleteBasket(string userName)
         {
             await redisCache.RemoveAsync(userName);
-          //  var exists = await redisCache.GetStringAsync(userName);
+          //  var exists = await redisCache.GetstringAsync(userName);
         }
 
         public async Task<ShoppingCart> GetBasket(string userName)
