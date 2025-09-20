@@ -24,6 +24,8 @@ namespace Basket.Handlers
             // delete the basket
             await mediator.Send(new DeleteBasketByUsernameCommand(dto.UserName),cancellationToken);
 
+            return Unit.Value;
+
         }
     }
 }

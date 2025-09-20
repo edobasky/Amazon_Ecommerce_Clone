@@ -1,4 +1,8 @@
-﻿using Ordering.Commands;
+﻿using System.Text.Json;
+using System.Text.Json.Serialization;
+using EventBus.Messages.Events;
+using Ordering.Commands;
+using Ordering.Constants;
 using Ordering.DTOs;
 using Ordering.Entities;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
@@ -96,6 +100,58 @@ namespace Ordering.Mappers
             orderToUpdate.PaymentMethod = request.PaymentMethod;
             orderToUpdate.EmailAddress  = request.EmailAddress;
             orderToUpdate.ZipCode = request.ZipCode;
+        }
+
+        public static CheckOutOrderCommand ToCheckoutOrderCommand(this BasketCheckoutEvent message)
+        {
+            return new CheckOutOrderCommand
+            {
+                UserName = message.UserName!,
+                TotalPrice = message.TotalPrice,
+                FirstName = message.FirstName,
+                LastName = message.LastName,
+                AddressLine = message.AddressLine,
+                EmailAddress = message.EmailAddress,
+                Country = message.Country,
+                State   = message.State,
+                ZipCode = message.ZipCode,
+                PaymentMethod = message.PaymentMethod,
+                CardName = message.CardName,
+                CardNumber  = message.CardNumber,
+                Expiration = message.Expiration,    
+                Cvv = message.Cvv,
+
+
+            };
+        }
+
+        public static OutboxMessage ToOutboxMessage(this Order order)
+        {
+            return new OutboxMessage
+            {
+                CorrelationId = Guid.NewGuid().ToString(),
+                Type = OutboxMessageTypes.OrderCreated,
+                OccurredOn = DateTime.UtcNow,
+                Content = JsonSerializer.Serialize(new
+                {
+                    order.Id,
+                    order.UserName,
+                    order.TotalPrice,
+                    order.FirstName,
+                    order.LastName,
+                    order.AddressLine,
+                    order.Country,
+                    order.State,
+                    order.ZipCode,
+                    // pci card sensitive
+                    order.CardName,
+                    order.CardNumber,
+                    order.Expiration,
+                    order.Cvv,
+                    order.PaymentMethod,
+                    order.Status
+                })
+            };
         }
     }
 }

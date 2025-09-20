@@ -8,7 +8,7 @@ namespace Catalog.Repositories
         private readonly IMongoCollection<ProductBrand> _brands;
         public BrandRepository(IConfiguration config)
         {
-            var client = new MongoClient(config["DatabaseSettings:ConnectionString"]);
+            var client = new MongoClient(config["DatabaseSettings:Connectionstring"]);
             var db = client.GetDatabase(config["DatabaseSettings:DatabaseName"]);
             _brands = db.GetCollection<ProductBrand>(config["DatabaseSettings:BrandCollectionName"]);
         }
