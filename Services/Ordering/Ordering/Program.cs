@@ -29,6 +29,9 @@ builder.Services.AddMassTransit(config =>
 {
     // Mark as consumer
     config.AddConsumer<BasketOrderringConsumer>();
+    config.AddConsumer<PaymentCompletedConsumer>();
+    config.AddConsumer<PaymentFailedConsumer>();
+
     config.UsingRabbitMq((ctx, cfg) =>
     {
         cfg.Host(builder.Configuration["EventBusSettings:HostAddress"]);
@@ -36,6 +39,16 @@ builder.Services.AddMassTransit(config =>
         cfg.ReceiveEndpoint(EventBusConstant.BasketCheckoutQueue, c =>
         {
             c.ConfigureConsumer<BasketOrderringConsumer>(ctx); 
+        });
+        // Payment completed Event
+        cfg.ReceiveEndpoint(EventBusConstant.PaymentCompletedQueue, e =>
+        {
+            e.ConfigureConsumer<PaymentCompletedConsumer>(ctx); 
+        });
+        // Payment failed Event
+        cfg.ReceiveEndpoint(EventBusConstant.PaymentFailedQueue, e =>
+        {
+            e.ConfigureConsumer<PaymentFailedConsumer>(ctx);
         });
     });
 });

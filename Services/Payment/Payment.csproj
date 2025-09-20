@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Infrastructure\EventBus.Messages\EventBus.Messages.csproj" />
+    <ProjectReference Include="..\Ordering\Ordering\Ordering.csproj" />
   </ItemGroup>
 
 </Project>
