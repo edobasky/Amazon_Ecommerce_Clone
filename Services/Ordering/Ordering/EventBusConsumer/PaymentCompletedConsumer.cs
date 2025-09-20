@@ -13,9 +13,12 @@ namespace Ordering.EventBusConsumer
             if (order is null)
             {
                 logger.LogWarning("Order not found for Id: {OrderId}", context.Message.OrderId);
-                order.Status = OrderStatus.Paid;
-                logger.LogInformation("Order Id {OrderId} marked as Paid",context.Message.OrderId);
+                return;
             }
+
+            order.Status = OrderStatus.Paid;
+            await orderRepository.UpdateAsync(order);
+            logger.LogInformation("Order Id {OrderId} marked as Paid", context.Message.OrderId);
         }
     }
 }
