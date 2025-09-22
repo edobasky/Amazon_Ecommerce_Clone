@@ -9,7 +9,7 @@
                     "Port": 8000
                 }
             ],
-            "UpstreamPathTemplate": "/Catalog/GetAllProducts",
+            "UpstreamPathTemplate": "/api/v1/Catalog/GetAllProducts",
             "UpstreamHttpMethod": [ "GET" ],
             "AddHeadersToRequest": {
                 "x-correlation-id": "{X-Correlation-Id}"
