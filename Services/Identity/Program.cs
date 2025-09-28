@@ -1,12 +1,17 @@
 using System.Text;
+using Common.Logging;
 using Identity.Data;
 using Identity.Models;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Serilog configure
+builder.Host.UseSerilog(Logging.ConfigureLogger);
 
 // Add services to the container.
 
