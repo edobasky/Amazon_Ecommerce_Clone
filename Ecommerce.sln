@@ -35,6 +35,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Identity", "Services\Identi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Logging", "Infrastructure\Common.Logging\Common.Logging.csproj", "{73F30E2A-8180-4208-B8EA-B932C9958E94}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ApiGateway", "ApiGateway\ApiGateway\ApiGateway.csproj", "{C3FF9C7B-DC19-52B5-B861-716F1AFD9714}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,10 @@ Global
 		{73F30E2A-8180-4208-B8EA-B932C9958E94}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{73F30E2A-8180-4208-B8EA-B932C9958E94}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{73F30E2A-8180-4208-B8EA-B932C9958E94}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C3FF9C7B-DC19-52B5-B861-716F1AFD9714}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C3FF9C7B-DC19-52B5-B861-716F1AFD9714}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C3FF9C7B-DC19-52B5-B861-716F1AFD9714}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C3FF9C7B-DC19-52B5-B861-716F1AFD9714}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
