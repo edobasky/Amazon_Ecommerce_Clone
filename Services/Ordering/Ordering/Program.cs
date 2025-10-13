@@ -58,6 +58,7 @@ builder.Services.AddMassTransit(config =>
     });
 });
 
+builder.Services.AddHttpContextAccessor();
 var app = builder.Build();
 
 app.MigrateDatabase<OrderContext>((context, services) =>
@@ -67,6 +68,7 @@ app.MigrateDatabase<OrderContext>((context, services) =>
 });
 
 // Configure the HTTP request pipeline.
+app.UseMiddleware<CorrelationIdMiddleware>();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();

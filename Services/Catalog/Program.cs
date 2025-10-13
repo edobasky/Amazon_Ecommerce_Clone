@@ -36,9 +36,10 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-
+builder.Services.AddHttpContextAccessor();
 var app = builder.Build();
 
+app.UseMiddleware<CorrelationIdMiddleware>();
 // Seed Mongo db on Startup
 using (var scope = app.Services.CreateScope())
 {

@@ -7,7 +7,7 @@ using MediatR;
 
 namespace Basket.Handlers
 {
-    public class CheckoutBasketCommandHandler(IMediator mediator,IPublishEndpoint publishEndpoint, ILogger<CheckoutBasketCommandHandler> logger) : IRequestHandler<CheckoutBasketCommand, Unit>
+    public class CheckoutBasketCommandHandler(IMediator mediator,IPublishEndpoint publishEndpoint, ILogger<CheckoutBasketCommandHandler> logger,IHttpContextAccessor httpContextAccessor) : IRequestHandler<CheckoutBasketCommand, Unit>
     {
         public async Task<Unit> Handle(CheckoutBasketCommand request, CancellationToken cancellationToken)
         {
@@ -19,6 +19,13 @@ namespace Basket.Handlers
             //Map
             var evt = dto.ToBasketCheckoutEvent(basket);
             logger.LogInformation("Publishing BasketCheckoutEvent for {User}",basket.UserName);
+
+            var correlationIdHeader = httpContextAccessor.HttpContext?.Request.Headers["x-correlation-id"].FirstOrDefault();
+            if (!string.IsNullOrEmpty(correlationIdHeader) && Guid.TryParse(correlationIdHeader, out var correlationId))
+            {
+                evt.CorrelationId = correlationId;
+            }
+            logger.LogInformation("Publishing BasketCheckoutEvent for {User} with CorrelationId {CorrelationId}", basket.UserName, evt.CorrelationId);
             await publishEndpoint.Publish(evt,cancellationToken);
 
             // delete the basket

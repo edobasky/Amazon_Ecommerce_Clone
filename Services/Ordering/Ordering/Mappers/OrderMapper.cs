@@ -128,30 +128,35 @@ namespace Ordering.Mappers
 
         public static OutboxMessage ToOutboxMessage(this Order order, Guid correlationId)
         {
+
+            var integrationEvent = new OrderCreatedEvent
+            {
+                Id = order.Id,
+                UserName = order.UserName,
+                TotalPrice = (decimal)order.TotalPrice,
+                FirstName = order.FirstName,
+                LastName = order.LastName,
+                AddressLine = order.AddressLine,
+                Country = order.Country,
+                State = order.State,
+                ZipCode = order.ZipCode,
+                CardName = order.CardName,
+                CardNumber = order.CardNumber,
+                Expiration = order.Expiration,
+                Cvv = order.Cvv,
+                PaymentMethod = (int)order.PaymentMethod,
+                Status = order.Status.ToString(),
+                CorrelationId = correlationId,
+                CreationDate = DateTime.UtcNow
+            };
+
+
             return new OutboxMessage
             {
                 CorrelationId = correlationId.ToString(),
                 Type = OutboxMessageTypes.OrderCreated,
                 OccurredOn = DateTime.UtcNow,
-                Content = JsonSerializer.Serialize(new
-                {
-                    order.Id,
-                    order.UserName,
-                    order.TotalPrice,
-                    order.FirstName,
-                    order.LastName,
-                    order.AddressLine,
-                    order.Country,
-                    order.State,
-                    order.ZipCode,
-                    // pci card sensitive
-                    order.CardName,
-                    order.CardNumber,
-                    order.Expiration,
-                    order.Cvv,
-                    order.PaymentMethod,
-                    order.Status
-                })
+                Content = JsonSerializer.Serialize(integrationEvent)
             };
         }
 

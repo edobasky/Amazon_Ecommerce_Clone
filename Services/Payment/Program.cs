@@ -29,10 +29,11 @@ builder.Services.AddMassTransit(config =>
         });
     });
 });
-
+builder.Services.AddHttpContextAccessor();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseMiddleware<CorrelationIdMiddleware>();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
