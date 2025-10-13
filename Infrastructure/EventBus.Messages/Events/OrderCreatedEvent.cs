@@ -17,5 +17,6 @@
         public string? Expiration { get; set; }
         public string? Cvv { get; set; }
         public int PaymentMethod { get; set; }
+        public string? Status { get; set; }
     }
 }

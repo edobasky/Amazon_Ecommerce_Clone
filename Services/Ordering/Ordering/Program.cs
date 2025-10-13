@@ -1,11 +1,16 @@
+using Common.Logging;
 using EventBus.Messages.Common;
 using MassTransit;
 using Ordering.Data;
 using Ordering.Dispatcher;
 using Ordering.EventBusConsumer;
 using Ordering.Extensions;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Serilog configure
+builder.Host.UseSerilog(Logging.ConfigureLogger);
 
 // Add services to the container.
 
@@ -53,6 +58,7 @@ builder.Services.AddMassTransit(config =>
     });
 });
 
+builder.Services.AddHttpContextAccessor();
 var app = builder.Build();
 
 app.MigrateDatabase<OrderContext>((context, services) =>
@@ -62,6 +68,7 @@ app.MigrateDatabase<OrderContext>((context, services) =>
 });
 
 // Configure the HTTP request pipeline.
+app.UseMiddleware<CorrelationIdMiddleware>();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();

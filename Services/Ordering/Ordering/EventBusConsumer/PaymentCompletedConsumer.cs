@@ -12,7 +12,7 @@ namespace Ordering.EventBusConsumer
             var order = await orderRepository.GetByIdAsync(context.Message.OrderId);
             if (order is null)
             {
-                logger.LogWarning("Order not found for Id: {OrderId}", context.Message.OrderId);
+                logger.LogWarning("Order not found for Id: {OrderId} and {CorrelationId}", context.Message.OrderId, context.Message.CorrelationId);
                 return;
             }
 

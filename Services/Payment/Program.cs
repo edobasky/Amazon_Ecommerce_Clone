@@ -1,8 +1,12 @@
+using Common.Logging;
 using EventBus.Messages.Common;
 using MassTransit;
 using Payment.Consumers;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+// Serilog configure
+builder.Host.UseSerilog(Logging.ConfigureLogger);
 
 // Add services to the container.
 
@@ -25,10 +29,11 @@ builder.Services.AddMassTransit(config =>
         });
     });
 });
-
+builder.Services.AddHttpContextAccessor();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
+app.UseMiddleware<CorrelationIdMiddleware>();
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();

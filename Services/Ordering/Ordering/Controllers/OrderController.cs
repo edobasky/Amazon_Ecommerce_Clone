@@ -25,27 +25,39 @@ namespace Ordering.Controllers
         [HttpPost(Name = "CheckoutOrder")]
         public async Task<ActionResult<int>> CheckoutOrder([FromBody] CreateOrderDto dto)
         {
+            // Extract Correlation id x-correlation-id
+            var correlationId = HttpContext.Request.Headers["x-correlation-id"].FirstOrDefault() ?? Guid.NewGuid().ToString();
+
             var command = dto.ToCommand();
+            command.CorrelationId = Guid.Parse(correlationId);
             var result = await mediator.Send(command);
-            logger.LogInformation($"Order create with Id: {result}");
+            logger.LogInformation($"Order create with Id: {result}, CorrelationId: {correlationId}");
             return Ok(result);
         }
 
         [HttpPut(Name ="UpdateOrder")]
         public async Task<IActionResult> UpdateOrder([FromBody] OrderDto dto)
         {
+            // Extract Correlation id x-correlation-id
+            var correlationId = HttpContext.Request.Headers["x-correlation-id"].FirstOrDefault() ?? Guid.NewGuid().ToString();
+
             var command = dto.ToCommand();
+            command.CorrelationId = Guid.Parse(correlationId);
             await mediator.Send(command);
-            logger.LogInformation($"Order updated with Id: {dto.Id}");
+            logger.LogInformation($"Order updated with Id: {dto.Id},  CorrelationId: {correlationId}");
             return NoContent();
         }
 
         [HttpDelete("{id}",Name = "DeleteOrder")]
         public async Task<IActionResult> DeleteOrder([FromRoute] int id)
         {
+            // Extract Correlation id x-correlation-id
+            var correlationId = HttpContext.Request.Headers["x-correlation-id"].FirstOrDefault() ?? Guid.NewGuid().ToString();
+
             var command = new DeleteOrderCommand { Id = id };
+            command.CorrelationId= Guid.Parse(correlationId);
             await mediator.Send(command);
-            logger.LogInformation($"Order deleted with id: {id}");
+            logger.LogInformation($"Order deleted with id: {id},  CorrelationId: {correlationId}");
             return NoContent();
         }
     }
