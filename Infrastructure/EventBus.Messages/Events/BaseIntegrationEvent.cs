@@ -8,7 +8,7 @@
 
         public BaseIntegrationEvent()
         {
-            CorrelationId = Guid.NewGuid();
+            //CorrelationId = Guid.NewGuid();
             CreationDate = DateTime.UtcNow;
         }
 

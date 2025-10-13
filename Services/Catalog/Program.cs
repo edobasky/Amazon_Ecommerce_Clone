@@ -2,11 +2,16 @@ using System.Reflection;
 using Catalog.Data;
 using Catalog.Handlers.Read;
 using Catalog.Repositories;
+using Common.Logging;
 using MongoDB.Bson;
 using MongoDB.Bson.Serialization;
 using MongoDB.Bson.Serialization.Serializers;
+using Serilog;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// Serilog configure
+builder.Host.UseSerilog(Logging.ConfigureLogger);
 
 // Register custom serializers
 BsonSerializer.RegisterSerializer(new GuidSerializer(BsonType.String));
@@ -31,9 +36,10 @@ builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
-
+builder.Services.AddHttpContextAccessor();
 var app = builder.Build();
 
+app.UseMiddleware<CorrelationIdMiddleware>();
 // Seed Mongo db on Startup
 using (var scope = app.Services.CreateScope())
 {
