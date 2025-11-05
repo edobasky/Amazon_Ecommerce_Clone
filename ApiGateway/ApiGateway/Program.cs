@@ -12,8 +12,25 @@ var Key = jwtSettings["Key"];
 var issuer = jwtSettings["Issuer"];
 var audience = jwtSettings["Audience"];
 
+var env = builder.Environment.EnvironmentName;
 
-builder.Configuration.AddJsonFile("ocelot.json",optional: false, reloadOnChange:true);
+builder.Configuration
+    .SetBasePath(Directory.GetCurrentDirectory())
+    .AddJsonFile("ocelot.Local.json",optional: false, reloadOnChange:true)
+    .AddJsonFile($"ocelot.{env}.json", optional: false, reloadOnChange: true)
+    .AddEnvironmentVariables();
+
+// Add Cors
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.WithOrigins("http:localhost:4200") // angular app
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+    });
+});
+
 
 // Add JWT auth to ocelot
 builder.Services.AddAuthentication("Bearer")
@@ -31,7 +48,7 @@ builder.Services.AddAuthentication("Bearer")
         };
     });
 builder.Services.AddAuthorization();
-builder.Services.AddOcelot();
+builder.Services.AddOcelot(builder.Configuration);
 builder.Services.AddEndpointsApiExplorer();
 
 builder.Services.AddControllers();
@@ -45,6 +62,9 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
+
+// CORS must map before Ocelot
+app.UseCors("AllowFrontend");
 
 //app.UseHttpsRedirection();
 app.UseMiddleware<CorrelationIdMiddleware>();

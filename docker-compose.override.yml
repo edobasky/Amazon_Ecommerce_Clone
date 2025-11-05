@@ -1,0 +1,69 @@
+services:
+  basketdb:
+    container_name: basketdb
+    restart: always
+    ports:
+      - "6379:6379"
+
+  discountdb:
+    container_name: discountdb
+    image: postgres:17
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=pa55w0rd!
+      - POSTGRES_DB=DiscountDb
+    restart: always
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+
+  rabbitmq:
+    container_name: rabbitmq
+    restart: always
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
+  basket:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "CacheSettings__Connectionstring=basketdb:6379"
+      - "GrpcSettings__DiscountUrl=http://discount:8080"
+      - "EventBusSettings__HostAddress=amqp://guest:guest@rabbitmq:5672/"
+      - "ElasticConfiguration__Url=http://elasticsearch:9200"
+    depends_on:
+      - basketdb
+    ports:
+      - "8001:8080" #port external mapped to internal
+
+  discount:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - "DatabaseSettings__Connectionstring=Server=discountdb;Port=5432;Database=DiscountDb;User Id=admin;Password=pa55w0rd!;"
+      - "GrpcSettings__DiscountUrl=http://discount:8080"
+      - "ElasticConfiguration__Url=http://elasticsearch:9200"
+    depends_on:
+      - discountdb
+    ports:
+      - "8002:8080" #port external mapped to internal
+
+  elasticsearch:
+    container_name: elasticsearch
+    environment:
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+      - xpack.security.enabled=false
+    ports:
+      - "9200:9200"
+    volumes:
+      - elasticsearch-data:/usr/share/elasticsearch/data
+
+  kibana:
+    container_name: kibana
+    environment:
+      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    depends_on:
+      - elasticsearch
