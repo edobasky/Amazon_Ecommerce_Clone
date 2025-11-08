@@ -1,32 +1,36 @@
-# See https://aka.ms/customizecontainer to learn how to customize your debug container and how Visual Studio uses this Dockerfile to build your images for faster debugging.
-
-# This stage is used when running from VS in fast mode (Default for Debug configuration)
+# Base image
 FROM mcr.microsoft.com/dotnet/aspnet:9.0 AS base
 USER $APP_UID
 WORKDIR /app
 EXPOSE 8080
 EXPOSE 8081
 
-
-# This stage is used to build the service project
+# Build stage
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
+
+# Copy only Payment + shared dependencies
 COPY ["Services/Payment/Payment.csproj", "Services/Payment/"]
 COPY ["Infrastructure/Common.Logging/Common.Logging.csproj", "Infrastructure/Common.Logging/"]
 COPY ["Infrastructure/EventBus.Messages/EventBus.Messages.csproj", "Infrastructure/EventBus.Messages/"]
-COPY ["Services/Ordering/Ordering/Ordering.csproj", "Services/Ordering/Ordering/"]
+
 RUN dotnet restore "./Services/Payment/Payment.csproj"
-COPY . .
+
+# Copy only Payment source code
+COPY Services/Payment/. Services/Payment/
+COPY Infrastructure/Common.Logging/. Infrastructure/Common.Logging/
+COPY Infrastructure/EventBus.Messages/. Infrastructure/EventBus.Messages/
+
 WORKDIR "/src/Services/Payment"
 RUN dotnet build "./Payment.csproj" -c $BUILD_CONFIGURATION -o /app/build
 
-# This stage is used to publish the service project to be copied to the final stage
+# Publish stage
 FROM build AS publish
 ARG BUILD_CONFIGURATION=Release
 RUN dotnet publish "./Payment.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
 
-# This stage is used in production or when running from VS in regular mode (Default when not using the Debug configuration)
+# Final runtime stage
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .

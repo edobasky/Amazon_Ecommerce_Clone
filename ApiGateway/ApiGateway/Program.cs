@@ -20,12 +20,14 @@ builder.Configuration
     .AddJsonFile($"ocelot.{env}.json", optional: false, reloadOnChange: true)
     .AddEnvironmentVariables();
 
+var allowedOrigins = builder.Configuration.GetSection("Cors:AllowedOrigins").Get<string[]>();
+
 // Add Cors
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowFrontend", policy =>
     {
-        policy.WithOrigins("http:localhost:4200") // angular app
+        policy.WithOrigins(allowedOrigins ?? Array.Empty<string>()) // angular app
                 .AllowAnyHeader()
                 .AllowAnyMethod();
     });
@@ -63,6 +65,7 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
+app.UseRouting();
 // CORS must map before Ocelot
 app.UseCors("AllowFrontend");
 
@@ -73,6 +76,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapGet("/", async context => { await context.Response.WriteAsync("Hello App gateway Started"); });
+});
 
 await app.UseOcelot();
 app.Run();

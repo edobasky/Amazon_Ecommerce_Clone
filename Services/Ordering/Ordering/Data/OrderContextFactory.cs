@@ -9,12 +9,19 @@ namespace Ordering.Data
         {
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
-                .AddJsonFile("appsettings.json")
+                .AddJsonFile("appsettings.json",optional:false,reloadOnChange: true)
                 .Build();
 
             var connectionstring = configuration.GetConnectionString("OrderConnection");
             var optionsBuilder = new DbContextOptionsBuilder<OrderContext>();
-            optionsBuilder.UseSqlServer(connectionstring);
+            optionsBuilder.UseSqlServer(connectionstring, sqlOptions =>
+            {
+                sqlOptions.EnableRetryOnFailure(
+                    maxRetryCount: 5,
+                    maxRetryDelay: TimeSpan.FromSeconds(10),
+                    errorNumbersToAdd: null
+                    );
+            });
             return new OrderContext(optionsBuilder.Options);
         }
     }
