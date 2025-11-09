@@ -26,7 +26,10 @@ namespace Basket.Handlers
                 evt.CorrelationId = correlationId;
             }
             logger.LogInformation("Publishing BasketCheckoutEvent for {User} with CorrelationId {CorrelationId}", basket.UserName, evt.CorrelationId);
-            await publishEndpoint.Publish(evt,cancellationToken);
+            await publishEndpoint.Publish(evt,context =>
+            {
+                context.CorrelationId = evt.CorrelationId;
+            },cancellationToken);
 
             // delete the basket
             await mediator.Send(new DeleteBasketByUsernameCommand(dto.UserName),cancellationToken);
