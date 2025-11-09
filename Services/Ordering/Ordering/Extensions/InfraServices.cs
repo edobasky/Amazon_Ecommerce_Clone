@@ -10,7 +10,11 @@ namespace Ordering.Extensions
         {
             services.AddDbContext<OrderContext>(options => options.UseSqlServer(
                 configuration.GetConnectionString("OrderConnection"),
-                sqlServiceOptions => sqlServiceOptions.EnableRetryOnFailure()));
+                sqlServiceOptions => sqlServiceOptions.EnableRetryOnFailure(
+                    maxRetryCount: 5,
+                    maxRetryDelay: TimeSpan.FromSeconds(10),
+                    errorNumbersToAdd: null
+                    )));
             services.AddScoped(typeof(IAsyncRepository<>),typeof(RepositoryBase<>));
             services.AddScoped<IOrderRepository,OrderRepository>();
 
